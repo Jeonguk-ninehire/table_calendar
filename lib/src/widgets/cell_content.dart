@@ -158,8 +158,8 @@ class CellContent extends StatelessWidget {
             decoration: calendarStyle.outsideDecoration,
             alignment: alignment,
             child: Text(text,
-                style: (calendarFormat == CalendarFormat.week && isHoliday)
-                    ? calendarStyle.holidayTextStyle
+                style: (calendarFormat == CalendarFormat.week && isWeekend)
+                    ? calendarStyle.weekendTextStyle
                     : calendarStyle.outsideTextStyle),
           );
     } else {
