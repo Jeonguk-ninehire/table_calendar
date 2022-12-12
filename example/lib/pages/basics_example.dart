@@ -23,6 +23,14 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
         title: Text('TableCalendar - Basics'),
       ),
       body: TableCalendar(
+        locale: 'ko-KR',
+        headerButton: Icon(Icons.arrow_downward),
+        calendarStyle: CalendarStyle(
+            markersAlignment: Alignment.center,
+            markersMaxCount: 1,
+            rowDecoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey)))),
+        // headerStyle: HeaderStyle(titleTextFormatter: (date, locale) => DateFormat.yM(locale).format(date),),
         firstDay: kFirstDay,
         lastDay: kLastDay,
         focusedDay: _focusedDay,

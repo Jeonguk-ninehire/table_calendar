@@ -91,6 +91,10 @@ class _TableEventsExampleState extends State<TableEventsExample> {
       body: Column(
         children: [
           TableCalendar<Event>(
+            locale: 'ko-KR',
+            headerStyle: HeaderStyle(
+                headerPadding: EdgeInsets.only(top: 12, bottom: 24)),
+            headerButton: Icon(Icons.arrow_downward),
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,
@@ -104,6 +108,11 @@ class _TableEventsExampleState extends State<TableEventsExample> {
             calendarStyle: CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
+              markersMaxCount: 1,
+              selectedDecoration: BoxDecoration(
+                color: Colors.purple,
+                shape: BoxShape.circle,
+              ),
             ),
             onDaySelected: _onDaySelected,
             onRangeSelected: _onRangeSelected,
@@ -117,6 +126,24 @@ class _TableEventsExampleState extends State<TableEventsExample> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
+            calendarBuilders: CalendarBuilders(
+              singleMarkerBuilder: (context, dateTime, event) {
+                bool passedEvent = DateTime.now().compareTo(dateTime) == 1;
+                return Column(
+                  children: [
+                    const SizedBox(height: 2),
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: passedEvent ? Colors.grey : Colors.purple,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           const SizedBox(height: 8.0),
           Expanded(

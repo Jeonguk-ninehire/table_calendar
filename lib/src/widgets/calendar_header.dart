@@ -5,9 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 import '../customization/header_style.dart';
-import '../shared/utils.dart' show CalendarFormat, DayBuilder;
-import 'custom_icon_button.dart';
-import 'format_button.dart';
+import '../shared/utils.dart' show CalendarFormat;
 
 class CalendarHeader extends StatelessWidget {
   final dynamic locale;
@@ -17,7 +15,6 @@ class CalendarHeader extends StatelessWidget {
   final VoidCallback onHeaderTap;
   final Widget headerButton;
   final Map<CalendarFormat, String> availableCalendarFormats;
-  final DayBuilder? headerTitleBuilder;
 
   const CalendarHeader({
     Key? key,
@@ -28,36 +25,34 @@ class CalendarHeader extends StatelessWidget {
     required this.onHeaderTap,
     required this.availableCalendarFormats,
     required this.headerButton,
-    this.headerTitleBuilder,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final text = headerStyle.titleTextFormatter?.call(focusedMonth, locale) ??
-        DateFormat.yMMMM(locale).format(focusedMonth);
+    final text = DateFormat('yyyy. MM월').format(focusedMonth);
 
     return Container(
       decoration: headerStyle.decoration,
       margin: headerStyle.headerMargin,
       padding: headerStyle.headerPadding,
-      alignment: Alignment.center,
-      child: headerTitleBuilder?.call(context, focusedMonth) ??
-          GestureDetector(
-            onTap: onHeaderTap,
-            child: Row(
-              children: [
-                Text(
-                  text,
-                  style: headerStyle.titleTextStyle,
-                ),
-                SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: headerButton,
-                )
-              ],
+      child: GestureDetector(
+        onTap: onHeaderTap,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: headerStyle.titleTextStyle,
             ),
-          ),
+            SizedBox(
+              width: 32,
+              height: 32,
+              child: headerButton,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
