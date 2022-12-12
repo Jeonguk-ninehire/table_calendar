@@ -3,6 +3,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/src/shared/utils.dart';
 
 import '../customization/calendar_builders.dart';
 import '../customization/calendar_style.dart';
@@ -21,6 +22,7 @@ class CellContent extends StatelessWidget {
   final bool isDisabled;
   final bool isHoliday;
   final bool isWeekend;
+  final CalendarFormat calendarFormat;
   final CalendarStyle calendarStyle;
   final CalendarBuilders calendarBuilders;
 
@@ -41,6 +43,7 @@ class CellContent extends StatelessWidget {
     required this.isHoliday,
     required this.isWeekend,
     this.locale,
+    required this.calendarFormat,
   }) : super(key: key);
 
   @override
@@ -154,7 +157,10 @@ class CellContent extends StatelessWidget {
             padding: padding,
             decoration: calendarStyle.outsideDecoration,
             alignment: alignment,
-            child: Text(text, style: calendarStyle.outsideTextStyle),
+            child: Text(text,
+                style: (calendarFormat == CalendarFormat.week && isHoliday)
+                    ? calendarStyle.holidayTextStyle
+                    : calendarStyle.outsideTextStyle),
           );
     } else {
       cell = calendarBuilders.defaultBuilder?.call(context, day, focusedDay) ??
