@@ -79,6 +79,23 @@ class CellContent extends StatelessWidget {
             alignment: alignment,
             child: Text(text, style: calendarStyle.disabledTextStyle),
           );
+    } else if (isToday && isTodayHighlighted) {
+      cell = calendarBuilders.todayBuilder?.call(context, day, focusedDay) ??
+          AnimatedContainer(
+            duration: duration,
+            margin: margin,
+            padding: padding,
+            alignment: alignment,
+            child: Container(
+                width: 30,
+                height: 30,
+                decoration: isSelected ? calendarStyle.todayDecoration : null,
+                alignment: Alignment.center,
+                child: Text(text,
+                    style: isSelected
+                        ? calendarStyle.selectedTextStyle
+                        : calendarStyle.todayTextStyle)),
+          );
     } else if (isSelected) {
       cell = calendarBuilders.selectedBuilder?.call(context, day, focusedDay) ??
           AnimatedContainer(
@@ -113,23 +130,6 @@ class CellContent extends StatelessWidget {
             decoration: calendarStyle.rangeEndDecoration,
             alignment: alignment,
             child: Text(text, style: calendarStyle.rangeEndTextStyle),
-          );
-    } else if (isToday && isTodayHighlighted) {
-      cell = calendarBuilders.todayBuilder?.call(context, day, focusedDay) ??
-          AnimatedContainer(
-            duration: duration,
-            margin: margin,
-            padding: padding,
-            alignment: alignment,
-            child: Container(
-                width: 30,
-                height: 30,
-                decoration: isSelected ? calendarStyle.todayDecoration : null,
-                alignment: Alignment.center,
-                child: Text(text,
-                    style: isSelected
-                        ? calendarStyle.selectedTextStyle
-                        : calendarStyle.todayTextStyle)),
           );
     } else if (isHoliday) {
       cell = calendarBuilders.holidayBuilder?.call(context, day, focusedDay) ??
