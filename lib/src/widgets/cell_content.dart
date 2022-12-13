@@ -124,9 +124,12 @@ class CellContent extends StatelessWidget {
             child: Container(
                 width: 30,
                 height: 30,
-                decoration: calendarStyle.todayDecoration,
+                decoration: isSelected ? calendarStyle.todayDecoration : null,
                 alignment: Alignment.center,
-                child: Text(text, style: calendarStyle.todayTextStyle)),
+                child: Text(text,
+                    style: isSelected
+                        ? calendarStyle.selectedTextStyle
+                        : calendarStyle.todayTextStyle)),
           );
     } else if (isHoliday) {
       cell = calendarBuilders.holidayBuilder?.call(context, day, focusedDay) ??
