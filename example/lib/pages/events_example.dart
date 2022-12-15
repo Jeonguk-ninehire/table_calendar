@@ -65,8 +65,25 @@ class _TableEventsExampleState extends State<TableEventsExample> {
           TableCalendar<Event>(
             locale: 'ko-KR',
             headerStyle: HeaderStyle(
-                headerPadding: EdgeInsets.only(top: 12, bottom: 24)),
+                headerPadding:
+                    EdgeInsets.only(top: 12, bottom: 24, left: 24, right: 24)),
             headerButton: Icon(Icons.arrow_downward),
+            todayButton: InkWell(
+              onTap: () {
+                if (isSameDay(_focusedDay, DateTime.now())) {
+                  return;
+                }
+                setState(() {
+                  _focusedDay = DateTime.now();
+                  _selectedDay = _focusedDay;
+                });
+              },
+              child: Container(
+                  alignment: Alignment.center,
+                  width: 32,
+                  height: 32,
+                  child: Text('오늘')),
+            ),
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,

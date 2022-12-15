@@ -1,6 +1,7 @@
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,7 @@ class CalendarHeader extends StatelessWidget {
   final HeaderStyle headerStyle;
   final VoidCallback onHeaderTap;
   final Widget headerButton;
+  final Widget? todayButton;
   final Map<CalendarFormat, String> availableCalendarFormats;
 
   const CalendarHeader({
@@ -25,6 +27,7 @@ class CalendarHeader extends StatelessWidget {
     required this.onHeaderTap,
     required this.availableCalendarFormats,
     required this.headerButton,
+    this.todayButton,
   }) : super(key: key);
 
   @override
@@ -39,7 +42,6 @@ class CalendarHeader extends StatelessWidget {
         onTap: onHeaderTap,
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               text,
@@ -49,10 +51,19 @@ class CalendarHeader extends StatelessWidget {
               width: 32,
               height: 32,
               child: headerButton,
-            )
+            ),
+            const Expanded(child: SizedBox()),
+            ..._getTodayWidget()
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> _getTodayWidget() {
+    if (todayButton == null) {
+      return [];
+    }
+    return [todayButton!];
   }
 }
