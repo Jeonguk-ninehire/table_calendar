@@ -39,7 +39,11 @@ class CalendarPage extends StatelessWidget {
       padding: tablePadding ?? EdgeInsets.zero,
       child: Column(
         children: [
-          _buildDaysOfWeek(context),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            width: double.infinity,
+            child: _buildDaysOfWeek(context),
+          ),
           Expanded(
             child: Table(
               border: tableBorder,
@@ -54,12 +58,14 @@ class CalendarPage extends StatelessWidget {
   }
 
   Widget _buildDaysOfWeek(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 7,
-      itemBuilder: (BuildContext context, int index) =>
-          dowBuilder!(context, visibleDays[index]),
+    List<Widget> dows = [];
+    for (int index = 0; index < 7; index++) {
+      dows.add(dowBuilder!(context, visibleDays[index]));
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: dows,
     );
   }
 

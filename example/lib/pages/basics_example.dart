@@ -26,10 +26,11 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
         locale: 'ko-KR',
         headerButton: Icon(Icons.arrow_downward),
         calendarStyle: CalendarStyle(
-            markersAlignment: Alignment.center,
-            markersMaxCount: 1,
-            rowDecoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey)))),
+          markersAlignment: Alignment.center,
+          markersMaxCount: 1,
+          tableBorder: TableBorder(
+              horizontalInside: BorderSide(width: 1, color: Colors.red)),
+        ),
         // headerStyle: HeaderStyle(titleTextFormatter: (date, locale) => DateFormat.yM(locale).format(date),),
         firstDay: kFirstDay,
         lastDay: kLastDay,
