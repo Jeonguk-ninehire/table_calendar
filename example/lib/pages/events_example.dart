@@ -121,7 +121,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 bool passedEvent = DateTime.now().compareTo(dateTime) == 1;
                 return Column(
                   children: [
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 3),
                     Container(
                       width: 6,
                       height: 6,
