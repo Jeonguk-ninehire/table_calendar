@@ -40,7 +40,6 @@ class CalendarPage extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 4),
             width: double.infinity,
             child: _buildDaysOfWeek(context),
           ),
