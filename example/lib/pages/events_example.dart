@@ -94,6 +94,9 @@ class _TableEventsExampleState extends State<TableEventsExample> {
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
+            enabledDayPredicate: (day) {
+              return _getEventsForDay(day).isNotEmpty;
+            },
             calendarStyle: CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
@@ -115,6 +118,16 @@ class _TableEventsExampleState extends State<TableEventsExample> {
               _focusedDay = focusedDay;
             },
             calendarBuilders: CalendarBuilders(
+              disabledBuilder:
+                  (BuildContext context, DateTime day, DateTime focusedDay) {
+                return Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${day.day}',
+                    style: TextStyle(color: Colors.amber),
+                  ),
+                );
+              },
               selectedBuilder:
                   (BuildContext context, DateTime day, DateTime focusedDay) {},
               singleMarkerBuilder: (context, dateTime, event) {

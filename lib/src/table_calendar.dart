@@ -626,7 +626,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           Widget? markerWidget =
               widget.calendarBuilders.markerBuilder?.call(context, day, events);
 
-          if (events.isNotEmpty && markerWidget == null) {
+          if (events.isNotEmpty && markerWidget == null || isToday) {
             final center = constraints.maxHeight / 2;
 
             final markerSize = widget.calendarStyle.markerSize ??
