@@ -32,7 +32,7 @@ class CustomCalendarHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = DateFormat('yyyy. MM월').format(focusedMonth);
+    final text = DateFormat('yyyy. MMMM', 'ko').format(focusedMonth);
 
     return Container(
       decoration: headerStyle.decoration,
