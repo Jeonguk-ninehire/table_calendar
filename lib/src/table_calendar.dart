@@ -6,6 +6,8 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
+import 'package:table_calendar/src/calendar_header_type.dart';
+import 'package:table_calendar/src/widgets/custom_calendar_header.dart';
 
 import 'customization/calendar_builders.dart';
 import 'customization/calendar_style.dart';
@@ -208,6 +210,8 @@ class TableCalendar<T> extends StatefulWidget {
 
   final Widget? todayButton;
 
+  final CalendarHeaderType? headerType;
+
   /// Creates a `TableCalendar` widget.
   TableCalendar(
       {Key? key,
@@ -265,6 +269,7 @@ class TableCalendar<T> extends StatefulWidget {
       this.onFormatChanged,
       this.onCalendarCreated,
       required this.headerButton,
+      required this.headerType,
       this.todayButton})
       : assert(availableCalendarFormats.keys.contains(calendarFormat)),
         assert(availableCalendarFormats.length <= CalendarFormat.values.length),
@@ -286,6 +291,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   late final ValueNotifier<DateTime> _focusedDay;
   late RangeSelectionMode _rangeSelectionMode;
   DateTime? _firstSelectedDay;
+  late final PageController _pageController;
 
   @override
   void initState() {
@@ -444,22 +450,48 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           ValueListenableBuilder<DateTime>(
             valueListenable: _focusedDay,
             builder: (context, value, _) {
-              return CalendarHeader(
-                focusedMonth: value,
-                onHeaderTap: () => widget.onHeaderTapped?.call(value),
-                headerStyle: widget.headerStyle,
-                availableCalendarFormats: widget.availableCalendarFormats,
-                calendarFormat: widget.calendarFormat,
-                locale: widget.locale,
-                headerButton: widget.headerButton,
-                todayButton: widget.todayButton,
-              );
+              if (widget.headerType == CalendarHeaderType.normal) {
+                return CalendarHeader(
+                  headerTitleBuilder:
+                      widget.calendarBuilders.headerTitleBuilder,
+                  focusedMonth: value,
+                  onLeftChevronTap: _onLeftChevronTap,
+                  onRightChevronTap: _onRightChevronTap,
+                  onHeaderTap: () => widget.onHeaderTapped?.call(value),
+                  onHeaderLongPress: () =>
+                      widget.onHeaderLongPressed?.call(value),
+                  headerStyle: widget.headerStyle,
+                  availableCalendarFormats: widget.availableCalendarFormats,
+                  calendarFormat: widget.calendarFormat,
+                  locale: widget.locale,
+                  onFormatButtonTap: (format) {
+                    assert(
+                      widget.onFormatChanged != null,
+                      'Using `FormatButton` without providing `onFormatChanged` will have no effect.',
+                    );
+
+                    widget.onFormatChanged?.call(format);
+                  },
+                );
+              } else {
+                return CustomCalendarHeader(
+                  focusedMonth: value,
+                  onHeaderTap: () => widget.onHeaderTapped?.call(value),
+                  headerStyle: widget.headerStyle,
+                  availableCalendarFormats: widget.availableCalendarFormats,
+                  calendarFormat: widget.calendarFormat,
+                  locale: widget.locale,
+                  headerButton: widget.headerButton,
+                  todayButton: widget.todayButton,
+                );
+              }
             },
           ),
         Flexible(
           flex: widget.shouldFillViewport ? 1 : 0,
           child: TableCalendarBase(
             onCalendarCreated: (pageController) {
+              _pageController = pageController;
               widget.onCalendarCreated?.call(pageController);
             },
             focusedDay: _focusedDay.value,
@@ -699,6 +731,20 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             .difference(DateTime.utc(date.year, 1, 1))
             .inDays +
         1;
+  }
+
+  void _onLeftChevronTap() {
+    _pageController.previousPage(
+      duration: widget.pageAnimationDuration,
+      curve: widget.pageAnimationCurve,
+    );
+  }
+
+  void _onRightChevronTap() {
+    _pageController.nextPage(
+      duration: widget.pageAnimationDuration,
+      curve: widget.pageAnimationCurve,
+    );
   }
 
   bool _isWithinRange(DateTime day, DateTime start, DateTime end) {

@@ -1,0 +1,1 @@
+enum CalendarHeaderType { normal, custom }

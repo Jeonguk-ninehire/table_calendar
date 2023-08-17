@@ -63,6 +63,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
       body: Column(
         children: [
           TableCalendar<Event>(
+            headerType: CalendarHeaderType.normal,
             locale: 'ko-KR',
             headerStyle: HeaderStyle(
                 headerPadding:
